@@ -331,4 +331,61 @@ namespace input {
     bool isKeyReleasedOnce(Keyboard k);
 }
 
+namespace render {
+    namespace glw {
+        struct Shader {
+            uint32_t id = 0;
+
+            void init(GLenum type, std::string path);
+            void release();
+        };
+
+        struct Program;
+
+        struct Uniform {
+            Program* program = nullptr;
+            std::map<std::string, uint32_t> uniforms;
+
+            void init(Program* program);
+            void release();
+
+            void createUniform(std::string name);
+            // Integer
+            void uniform1i(std::string name, int x);
+            void uniform2i(std::string name, int x, int y);
+            void uniform3i(std::string name, int x, int y, int z);
+            void uniform4i(std::string name, int x, int y, int z, int w);
+            // Float
+            void uniform1f(std::string name, float x);
+            void uniform2f(std::string name, float x, float y);
+            void uniform3f(std::string name, float x, float y, float z);
+            void uniform4f(std::string name, float x, float y, float z, float w);
+            // Matrix
+            void uniformMat2(std::string name, const glm::mat2& m);
+            void uniformMat3(std::string name, const glm::mat3& m);
+            void uniformMat4(std::string name, const glm::mat4& m);
+        };
+
+        struct Attribute {
+            Program* program = nullptr;
+
+            void init(Program* program);
+            void release();
+        };
+
+        struct Program {
+            uint32_t id = 0;
+        };
+
+        struct VertexBuffer {
+
+        };
+
+        struct IndexBuffer {
+
+        };
+
+    }
+}
+
 #endif
