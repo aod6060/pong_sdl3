@@ -9,11 +9,13 @@
 namespace app {
 
     static Config* _config = nullptr;
-    SDL_Window* _window = nullptr;
-    SDL_GLContext _context = nullptr;
-    bool _is_running = true;
+    static SDL_Window* _window = nullptr;
+    static SDL_GLContext _context = nullptr;
+    static bool _is_running = true;
 
-
+    static float fps_time = 0.0f;
+    static float fps_maxTime = 1.0f;
+    
     void init(Config* config) {
         _config = config;
 
@@ -44,6 +46,17 @@ namespace app {
             curr_time = SDL_GetTicks();
             delta = (curr_time - pre_time) / 1000.0f;
             pre_time = curr_time;
+
+            // Update FPS timer
+            if(fps_maxTime <= fps_time) {
+                fps_time = 0.0f;
+                std::stringstream ss;
+                ss << getCaption() << " FPS: ("<< (1.0f / delta) <<")";
+                std::string cap = ss.str();
+                SDL_SetWindowTitle(_window, cap.c_str());
+            } else {
+                fps_time += delta;
+            }
 
             while(SDL_PollEvent(&e)) {
                 if(e.type == SDL_EVENT_QUIT) {
