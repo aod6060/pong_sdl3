@@ -45,6 +45,18 @@ namespace app {
     void update();
     void release();
 
+    std::string getCaption();
+    uint32_t getWidth();
+    uint32_t getHeight();
+
+    float getWidthFloat();
+    float getHeightFloat();
+    float getAspect();
+
+    void exit();
+
+    SDL_Window* getWindow();
+    SDL_GLContext getContext();
     
 }
 #endif

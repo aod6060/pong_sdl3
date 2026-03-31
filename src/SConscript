@@ -7,3 +7,9 @@ def source(file):
 env["source_files"] += [
     source("main.cpp")
 ]
+
+# Compile Engine
+SConscript("#/src/engine/SConscript", exports="env")
+
+# Compile Game
+SConscript("#/src/game/SConscript", exports="env")
