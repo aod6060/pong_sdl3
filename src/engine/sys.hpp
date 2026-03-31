@@ -325,8 +325,6 @@ namespace input {
     void handleEvent(SDL_Event* e);
     void update();
     void release();
-
-
     bool isKeyReleased(Keyboard k);
     bool isKeyPressedOnce(Keyboard k);
     bool isKeyPressed(Keyboard k);

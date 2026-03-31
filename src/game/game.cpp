@@ -3,16 +3,21 @@
 
 namespace game {
 
+    int test = 0;
+
     void GameApp::init() {
         glDisable(GL_DEPTH_TEST);
+
+        input::init();
     }
 
     void GameApp::handleEvent(SDL_Event* e) {
-
+        input::handleEvent(e);
     }
 
     void GameApp::update(float delta) {
-        std::cout << "Delta: " << delta << "\n";
+        
+        input::update();
     }
 
     void GameApp::render() {
@@ -24,7 +29,7 @@ namespace game {
     }
 
     void GameApp::release() {
-
+        input::release();
     }
 
     void setup(app::Config* config, GameApp* app) {
