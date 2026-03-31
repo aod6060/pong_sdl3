@@ -5,5 +5,6 @@ def source(file):
     return "#/src/engine/" + file
 
 env["source_files"] += [
-    source("app.cpp")
+    source("app.cpp"),
+    source("input.cpp")
 ]
