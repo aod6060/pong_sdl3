@@ -1,4 +1,5 @@
 #include "sys.hpp"
+#include <algorithm>
 #include <fstream>
 
 
@@ -99,8 +100,71 @@ namespace render {
         }
         
         // Attribute
-        
+        void Attribute::init(Program* program) {
+            this->program = program;
+            glGenVertexArrays(1, &this->id);
+        }
+
+        void Attribute::release() {
+            glDeleteVertexArrays(1, &this->id);
+            this->program = nullptr;
+        }
+
+        void Attribute::bind() {
+            glBindVertexArray(this->id);
+        }
+
+        void Attribute::unbind() {
+            glBindVertexArray(0);
+        }
+
+        void Attribute::createAttribute(std::string name, uint32_t value) {
+            this->attributes[name] = value;
+        }
+
+        void Attribute::enableAttribute(std::string name) {
+            glEnableVertexAttribArray(this->attributes.at(name));
+        }
+
+        void Attribute::disableAttribute(std::string name) {
+            glDisableVertexAttribArray(this->attributes.at(name));
+        }
+
+        void Attribute::pointer(std::string name, uint32_t size, GLenum type) {
+            glVertexAttribPointer(this->attributes.at(name), size, type, GL_FALSE, 0, nullptr);
+        }
+
         // Program
+        void Program::init(std::vector<Shader*> shaders) {
+            this->id = glCreateProgram();
+
+            std::for_each(shaders.begin(), shaders.end(), [&](Shader* shader) {
+                this->shaders.push_back(shader);
+                glAttachShader(this->id, shader->id);
+            });
+
+            glLinkProgram(this->id);
+        }
+
+        void Program::release() {
+            std::for_each(shaders.begin(), shaders.end(), [&](Shader* shader) {
+                shader = nullptr;
+                glDetachShader(this->id, shader->id);
+            });
+
+            shaders.clear();
+
+            glDeleteProgram(this->id);
+        }
+
+        void Program::bind() {
+            glUseProgram(this->id);
+        }
+
+        void Program::unbind() {
+            glUseProgram(0);
+        }
+
 
         // VertexBuffer
 
