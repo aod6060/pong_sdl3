@@ -424,12 +424,12 @@ namespace render {
 
         struct IndexBuffer {
             uint32_t id = 0;
-            std::vector<int> list;
+            std::vector<uint32_t> list;
 
-            void add1(int x);
-            void add2(int x, int y);
-            void add3(int x, int y, int z);
-            void add4(int x, int y, int z, int w);
+            void add1(uint32_t x);
+            void add2(uint32_t x, uint32_t y);
+            void add3(uint32_t x, uint32_t y, uint32_t z);
+            void add4(uint32_t x, uint32_t y, uint32_t z, uint32_t w);
             
             void clear();
 

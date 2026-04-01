@@ -167,9 +167,126 @@ namespace render {
 
 
         // VertexBuffer
+        void VertexBuffer::add1(float x) {
+            this->list.push_back(x);
+        }
+
+        void VertexBuffer::add2(float x, float y) {
+            this->list.push_back(x);
+            this->list.push_back(y);
+        }
+
+        void VertexBuffer::add3(float x, float y, float z) {
+            this->list.push_back(x);
+            this->list.push_back(y);
+            this->list.push_back(z);
+        }
+
+        void VertexBuffer::add4(float x, float y, float z, float w) {
+            this->list.push_back(x);
+            this->list.push_back(y);
+            this->list.push_back(z);
+            this->list.push_back(w);
+        }
+
+        void VertexBuffer::clear() {
+            this->list.clear();
+        }
+
+        void VertexBuffer::init() {
+            glGenBuffers(1, &this->id);
+        }
+
+        void VertexBuffer::release() {
+            glDeleteBuffers(1, &this->id);
+        }
+
+        void VertexBuffer::update() {
+            this->bind();
+            glBufferData(GL_ARRAY_BUFFER, this->dataSize(), this->list.data(), GL_DYNAMIC_DRAW);
+            this->unbind();
+        }
+
+        void VertexBuffer::bind() {
+            glBindBuffer(GL_ARRAY_BUFFER, id);
+        }
+
+        void VertexBuffer::unbind() {
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+        }
+
+        size_t VertexBuffer::typeSize() {
+            return sizeof(float);
+        }
+
+        size_t VertexBuffer::count() {
+            return list.size();
+        }
+
+        size_t VertexBuffer::dataSize() {
+            return this->typeSize() * this->count();
+        }
 
         // IndexBuffer
+        void IndexBuffer::add1(uint32_t x) {
+            this->list.push_back(x);
+        }
 
+        void IndexBuffer::add2(uint32_t x, uint32_t y) {
+            this->list.push_back(x);
+            this->list.push_back(y);
+        }
+
+        void IndexBuffer::add3(uint32_t x, uint32_t y, uint32_t z) {
+            this->list.push_back(x);
+            this->list.push_back(y);
+            this->list.push_back(z);
+        }
+
+        void IndexBuffer::add4(uint32_t x, uint32_t y, uint32_t z, uint32_t w) {
+            this->list.push_back(x);
+            this->list.push_back(y);
+            this->list.push_back(z);
+            this->list.push_back(w);
+        }
+
+        void IndexBuffer::clear() {
+            this->list.clear();
+        }
+
+        void IndexBuffer::init() {
+            glGenBuffers(1, &this->id);
+        }
+
+        void IndexBuffer::release() {
+            glDeleteBuffers(1, &this->id);
+        }
+
+        void IndexBuffer::update() {
+            this->bind();
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->dataSize(), this->list.data(), GL_DYNAMIC_DRAW);
+            this->unbind();
+        }
+
+        void IndexBuffer::bind() {
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
+        }
+
+        void IndexBuffer::unbind() {
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+        }
+
+        size_t IndexBuffer::typeSize() {
+            return sizeof(uint32_t);
+        }
+
+        size_t IndexBuffer::count() {
+            return list.size();
+        }
+
+        size_t IndexBuffer::dataSize() {
+            return this->typeSize() * this->count();
+        }
 
     }
 }
