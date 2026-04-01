@@ -1,4 +1,6 @@
 #include "game.hpp"
+#include "glm/ext/matrix_clip_space.hpp"
+#include "glm/ext/matrix_transform.hpp"
 
 
 namespace game {
@@ -6,9 +8,8 @@ namespace game {
     int test = 0;
 
     void GameApp::init() {
-        glDisable(GL_DEPTH_TEST);
-
         input::init();
+        render::init();
     }
 
     void GameApp::handleEvent(SDL_Event* e) {
@@ -21,14 +22,18 @@ namespace game {
     }
 
     void GameApp::render() {
-        glViewport(0, 0, app::getWidth(), app::getHeight());
-        glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        render::clear(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
+        render::setProjection(glm::ortho(0.0f, app::getWidthFloat(), app::getHeightFloat(), 0.0f));
+        render::setModel(
+            glm::translate(glm::mat4(1.0f), glm::vec3(32.0f, 32.0f, 0.0f)) *
+            glm::scale(glm::mat4(1.0f), glm::vec3(32.0f, 32.0, 0.0f))
+        );
 
-        // Do nothing here for the moment.
+        render::draw();
     }
 
     void GameApp::release() {
+        render::release();
         input::release();
     }
 

@@ -16,6 +16,7 @@ namespace render {
             std::string src;
             src.resize(shader_size);
             in.read(src.data(), src.size());
+            in.close();
 
             const char* c_src = src.c_str();
             glShaderSource(this->id, 1, &c_src, nullptr);
@@ -144,9 +145,25 @@ namespace render {
             });
 
             glLinkProgram(this->id);
+
+            int err_len = 0;
+            glGetProgramiv(this->id, GL_INFO_LOG_LENGTH, &err_len);
+
+            if(err_len > 0) {
+                std::string log;
+                log.resize(err_len);
+                glGetProgramInfoLog(this->id, log.size(), nullptr, log.data());
+                std::cout << log << "\n";
+            }
+
+            this->uniforms.init(this);
+            this->attributes.init(this);
         }
 
         void Program::release() {
+            this->attributes.release();
+            this->uniforms.release();
+            
             std::for_each(shaders.begin(), shaders.end(), [&](Shader* shader) {
                 shader = nullptr;
                 glDetachShader(this->id, shader->id);
