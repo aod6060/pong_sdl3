@@ -369,21 +369,80 @@ namespace render {
         struct Attribute {
             Program* program = nullptr;
             uint32_t id = 0;
-            
+            std::map<std::string, uint32_t> attributes;
+
+
             void init(Program* program);
             void release();
+            void bind();
+            void unbind();
+
+
+            void createAttribute(std::string name, uint32_t value);
+
+            void enableAttribute(std::string name);
+            void disableAttribute(std::string name);
+
+            void pointer(std::string name, uint32_t size, GLenum type);
         };
 
         struct Program {
             uint32_t id = 0;
+            std::vector<Shader*> shaders;
+            Uniform uniforms;
+            Attribute attributes;
+
+            void init(std::vector<Shader*> shaders);
+            void release();
+
+            void bind();
+            void unbind();
         };
 
         struct VertexBuffer {
+            uint32_t id = 0;
+            std::vector<float> list;
 
+            void add1(float x);
+            void add2(float x, float y);
+            void add3(float x, float y, float z);
+            void add4(float x, float y, float z, float w);
+            
+            void clear();
+
+            void init();
+            void release();
+            void update();
+
+            void bind();
+            void unbind();
+
+            size_t typeSize();
+            size_t count();
+            size_t dataSize();
         };
 
         struct IndexBuffer {
+            uint32_t id = 0;
+            std::vector<int> list;
 
+            void add1(int x);
+            void add2(int x, int y);
+            void add3(int x, int y, int z);
+            void add4(int x, int y, int z, int w);
+            
+            void clear();
+
+            void init();
+            void release();
+            void update();
+
+            void bind();
+            void unbind();
+
+            size_t typeSize();
+            size_t count();
+            size_t dataSize();
         };
 
     }
