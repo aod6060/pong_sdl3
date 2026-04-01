@@ -53,53 +53,53 @@ namespace render {
         
         // Integer
         void Uniform::uniform1i(std::string name, int x) {
-
+            glUniform1i(this->uniforms.at(name), x);
         }
         
         void Uniform::uniform2i(std::string name, int x, int y) {
-
+            glUniform2i(this->uniforms.at(name), x, y);
         }
         
         void Uniform::uniform3i(std::string name, int x, int y, int z) {
-
+            glUniform3i(this->uniforms.at(name), x, y, z);
         }
         
         void Uniform::uniform4i(std::string name, int x, int y, int z, int w) {
-
+            glUniform4i(this->uniforms.at(name), x, y, z, w);
         }
         
         // Float
         void Uniform::uniform1f(std::string name, float x) {
-
+            glUniform1f(this->uniforms.at(name), x);
         }
         
         void Uniform::uniform2f(std::string name, float x, float y) {
-
+            glUniform2f(this->uniforms.at(name), x, y);
         }
         
         void Uniform::uniform3f(std::string name, float x, float y, float z) {
-
+            glUniform3f(this->uniforms.at(name), x, y, z);
         }
         
         void Uniform::uniform4f(std::string name, float x, float y, float z, float w) {
-
+            glUniform4f(this->uniforms.at(name), x, y, z, w);
         }
         
         // Matrix
         void Uniform::uniformMat2(std::string name, const glm::mat2& m) {
-
+            glUniformMatrix2fv(this->uniforms.at(name), 1, GL_FALSE, &m[0][0]);
         }
         
         void Uniform::uniformMat3(std::string name, const glm::mat3& m) {
-
+            glUniformMatrix3fv(this->uniforms.at(name), 1, GL_FALSE, &m[0][0]);
         }
         
         void Uniform::uniformMat4(std::string name, const glm::mat4& m) {
-
+            glUniformMatrix4fv(this->uniforms.at(name), 1, GL_FALSE, &m[0][0]);
         }
         
         // Attribute
-
+        
         // Program
 
         // VertexBuffer

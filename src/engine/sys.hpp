@@ -368,7 +368,8 @@ namespace render {
 
         struct Attribute {
             Program* program = nullptr;
-
+            uint32_t id = 0;
+            
             void init(Program* program);
             void release();
         };
