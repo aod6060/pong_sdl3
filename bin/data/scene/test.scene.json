@@ -1,0 +1,25 @@
+{
+    "type": "scene",
+    "version": 1,
+    "behavior": null,
+    "entities": [
+        {
+            "name": "Player",
+            "behavior": null,
+            "transform": {
+                "position": {
+                    "x": 32.0,
+                    "y": 32.0,
+                    "z": 0.0
+                },
+                "rotation": 0.0,
+                "scale": {
+                    "x": 32.0,
+                    "y": 32.0,
+                    "z": 1.0
+                }
+            },
+            "components": []
+        }
+    ]
+}

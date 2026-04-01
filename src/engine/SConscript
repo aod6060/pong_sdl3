@@ -8,5 +8,6 @@ env["source_files"] += [
     source("app.cpp"),
     source("input.cpp"),
     source("glw.cpp"),
-    source("render.cpp")
+    source("render.cpp"),
+    source("manager.cpp")
 ]

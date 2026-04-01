@@ -3,6 +3,8 @@
 
 
 
+#include "SDL3/SDL_events.h"
+#include "json/value.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -450,13 +452,140 @@ namespace render {
 
     void init();
     void release();
-    
+
     void clear(glm::vec4 clearColor);
 
     void setProjection(glm::mat4 m);
     void setModel(glm::mat4 m);
 
     void draw();
+}
+
+
+namespace manager {
+
+    struct Global;
+    struct Scene;
+    struct Entity;
+
+    struct IComponent {
+        virtual void init(Entity* entity) = 0;
+        virtual void handleEvent(SDL_Event* e) = 0;
+        virtual void update(float delta) = 0;
+        virtual void render() = 0;
+        virtual void release() = 0;
+        virtual void load(Json::Value value) = 0;
+    };
+
+    struct IBehavior {
+        virtual void init(Scene* scene) = 0;
+        virtual void init(Entity* entity) = 0;
+        virtual void ready() = 0;
+        virtual void update(float delta) = 0;
+        virtual void release() = 0;
+    };
+
+    struct Global {
+        Scene* scene = nullptr;
+        
+        std::string scenePath;
+
+        bool isSceneChange = false;
+
+        virtual void init();
+        virtual void handleEvent(SDL_Event* e);
+        virtual void update(float delta);
+        virtual void render();
+        virtual void release();
+
+        void loadScene(std::string path);
+        void changeScene(std::string path);
+        void reloadScene();
+    };
+
+    struct Scene {
+        Global* global = nullptr;
+        std::vector<Entity*> entities;
+
+        IBehavior* behavior = nullptr;
+
+        void init(Global* global);
+        void handleEvent(SDL_Event* e);
+        void update(float delta);
+        void render();
+        void release();
+
+        void load(Json::Value value);
+
+        void addEntity(Entity* entity);
+        void removeEntity(Entity* entity);
+    };
+
+    struct Transform {
+        Entity* entity = nullptr;
+
+        glm::vec3 position;
+        float rotation;
+        glm::vec3 scale;
+
+        glm::mat4 toModel();
+
+        void load(Json::Value v);
+    };
+
+    struct Entity {
+        std::string name;
+        Scene* scene = nullptr;
+        Transform transform;
+        IBehavior* behavior = nullptr;
+        std::map<std::string, IComponent*> components;
+
+        bool needRemoval = false;
+        bool visible = true;
+
+
+        void init(Scene* scene);
+        void handleEvent(SDL_Event* e);
+        void update(float delta);
+        void render();
+        void release();
+
+        void load(Json::Value value);
+    };
+
+    namespace components {
+        namespace render {
+            struct SpriteComponent : public IComponent {
+                virtual void init(Entity* entity);
+                virtual void handleEvent(SDL_Event* e);
+                virtual void update(float delta);
+                virtual void render();
+                virtual void release();
+                virtual void load(Json::Value value);
+            };
+        }
+
+        // 
+        void init();
+        void release();
+        void registerComponent(std::string name, std::function<void()> functoryFunction);
+        IBehavior* create(std::string name);
+    }
+
+    namespace behavior {
+        struct Behavior : public manager::IBehavior {
+            Entity* entity = nullptr;
+            Scene* scene = nullptr;
+
+            virtual void init(Scene* scene);
+            virtual void init(Entity* entity);
+        };
+
+        // 
+        void release();
+        void registerBehavior(std::string name, std::function<void()> fuctoryFunction);
+        IBehavior* create(std::string name);
+    }
 }
 
 #endif
