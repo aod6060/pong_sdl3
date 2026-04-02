@@ -19,7 +19,11 @@
                     "z": 1.0
                 }
             },
-            "components": []
+            "components": [
+                {
+                    "type": "sprite"
+                }
+            ]
         }
     ]
 }

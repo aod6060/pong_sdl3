@@ -475,6 +475,8 @@ namespace manager {
         virtual void render() = 0;
         virtual void release() = 0;
         virtual void load(Json::Value value) = 0;
+
+        virtual ~IComponent() {}
     };
 
     struct IBehavior {
@@ -483,11 +485,14 @@ namespace manager {
         virtual void ready() = 0;
         virtual void update(float delta) = 0;
         virtual void release() = 0;
+
+        virtual ~IBehavior() {}
     };
 
     struct Global {
         Scene* scene = nullptr;
         
+        std::string defaultScenePath;
         std::string scenePath;
 
         bool isSceneChange = false;
@@ -497,10 +502,11 @@ namespace manager {
         virtual void update(float delta);
         virtual void render();
         virtual void release();
-
         void loadScene(std::string path);
         void changeScene(std::string path);
         void reloadScene();
+        void setDefaultScenePath(std::string path);
+        void startGame();
     };
 
     struct Scene {
@@ -514,9 +520,7 @@ namespace manager {
         void update(float delta);
         void render();
         void release();
-
         void load(Json::Value value);
-
         void addEntity(Entity* entity);
         void removeEntity(Entity* entity);
     };
@@ -528,8 +532,10 @@ namespace manager {
         float rotation;
         glm::vec3 scale;
 
-        glm::mat4 toModel();
+        void init(Entity* entity);
+        void release();
 
+        glm::mat4 toModel();
         void load(Json::Value v);
     };
 
@@ -549,13 +555,15 @@ namespace manager {
         void update(float delta);
         void render();
         void release();
-
         void load(Json::Value value);
+        void componentIterator(std::function<void(IComponent* comp)> callback);
     };
 
     namespace components {
         namespace render {
             struct SpriteComponent : public IComponent {
+                Entity* entity = nullptr;
+
                 virtual void init(Entity* entity);
                 virtual void handleEvent(SDL_Event* e);
                 virtual void update(float delta);
@@ -565,11 +573,12 @@ namespace manager {
             };
         }
 
-        // 
         void init();
         void release();
-        void registerComponent(std::string name, std::function<void()> functoryFunction);
-        IBehavior* create(std::string name);
+        void registerComponent(std::string name, std::function<IComponent*()> functoryFunction);
+        IComponent* create(std::string name);
+
+        void createFactory(manager::Entity* entity, std::string type, Json::Value value);
     }
 
     namespace behavior {
@@ -583,7 +592,7 @@ namespace manager {
 
         // 
         void release();
-        void registerBehavior(std::string name, std::function<void()> fuctoryFunction);
+        void registerBehavior(std::string name, std::function<IBehavior*()> fuctoryFunction);
         IBehavior* create(std::string name);
     }
 }
