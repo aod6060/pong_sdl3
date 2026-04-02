@@ -15,8 +15,17 @@
 
 namespace manager {
     // Global
-    void Global::init() {
+    void init() {
         components::init();
+    }
+
+    void release() {
+        behavior::release();
+        components::release();
+    }
+
+
+    void Global::init() {
         if(scene) {
             scene->init(this);
         }
@@ -44,8 +53,6 @@ namespace manager {
         if(scene) {
             scene->release();
         }
-        behavior::release();
-        components::release();
     }
 
     void Global::loadScene(std::string path) {

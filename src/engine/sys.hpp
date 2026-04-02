@@ -482,6 +482,7 @@ namespace manager {
     struct IBehavior {
         virtual void init(Scene* scene) = 0;
         virtual void init(Entity* entity) = 0;
+
         virtual void ready() = 0;
         virtual void update(float delta) = 0;
         virtual void release() = 0;
@@ -559,6 +560,10 @@ namespace manager {
         void componentIterator(std::function<void(IComponent* comp)> callback);
     };
 
+
+    void init();
+    void release();
+    
     namespace components {
         namespace render {
             struct SpriteComponent : public IComponent {

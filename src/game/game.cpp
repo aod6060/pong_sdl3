@@ -8,33 +8,42 @@ namespace game {
     int test = 0;
 
     void GameApp::init() {
+        global.setDefaultScenePath("data/scenes/test.scene.json");
+
         input::init();
         render::init();
+        manager::init();
+
+        this->initBehaviors();
+
+        global.startGame();
+        global.init();
     }
 
     void GameApp::handleEvent(SDL_Event* e) {
         input::handleEvent(e);
+        global.handleEvent(e);
     }
 
     void GameApp::update(float delta) {
-        
+        global.update(delta);
         input::update();
     }
 
     void GameApp::render() {
-        render::clear(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
-        render::setProjection(glm::ortho(0.0f, app::getWidthFloat(), app::getHeightFloat(), 0.0f));
-        render::setModel(
-            glm::translate(glm::mat4(1.0f), glm::vec3(32.0f, 32.0f, 0.0f)) *
-            glm::scale(glm::mat4(1.0f), glm::vec3(32.0f, 32.0, 0.0f))
-        );
-
-        render::draw();
+        global.render();
     }
 
     void GameApp::release() {
+        global.release();
+
+        manager::release();
         render::release();
         input::release();
+    }
+
+    void GameApp::initBehaviors() {
+        manager::behavior::registerBehavior("Game.MoveEntity", []() {return new MoveEntityBehavior();});
     }
 
     void setup(app::Config* config, GameApp* app) {
