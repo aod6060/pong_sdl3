@@ -21,6 +21,10 @@ namespace game {
 
     void setup(app::Config* config, GameApp* app);
 
+    namespace scene {
+        struct GameSceneBehavior;
+    }
+
     namespace entity {
         namespace paddle {
             namespace player1 {
@@ -49,10 +53,13 @@ namespace game {
         }
 
         struct BallEntityBehavior : public manager::behavior::EntityBehavior {
+            scene::GameSceneBehavior* gameScene = nullptr;
             manager::Transform* tran = nullptr;
-            
             glm::vec2 velocity = glm::vec2(0.0f);
+            float speed = 64.0f;
 
+            float speedX = 1.0f;
+            
             virtual void ready();
             virtual void update(float delta);
             virtual void release(); 
@@ -62,6 +69,16 @@ namespace game {
     }
 
     namespace scene {
+        struct GameSceneBehavior : public manager::behavior::SceneBehavior {
+            manager::Entity* player1 = nullptr;
+            manager::Entity* player2 = nullptr;
+
+            virtual void ready();
+            virtual void update(float delta);
+            virtual void release(); 
+
+        };
+
     }
 
     namespace global {

@@ -74,12 +74,49 @@ namespace game {
 
         // BallEntityBehavior
         void BallEntityBehavior::ready() {
+            this->gameScene = (scene::GameSceneBehavior*)this->entity->scene->behavior;
             this->tran = &this->entity->transform;
             this->reset();
         }
 
         void BallEntityBehavior::update(float delta) {
 
+            if(this->tran->position.y - (this->tran->scale.y * 0.5f) <= 0.0f) {
+                this->velocity.y = 1.0f;
+            }
+
+            if(this->tran->position.y + (this->tran->scale.y * 0.5f) > app::getHeightFloat()) {
+                this->velocity.y = -1.0f;
+            }
+
+            if(this->tran->position.x + (this->tran->scale.x * 0.5) < 0.0f) {
+                reset();
+            }
+
+            if(this->tran->position.x - (this->tran->scale.x * 0.5) > app::getWidthFloat()) {
+                reset();
+            }
+
+            manager::components::collision::BoxComponent* ballBoxComp = (manager::components::collision::BoxComponent*)this->entity->components.at("box");
+            manager::components::collision::BoxComponent* player1BoxComp = (manager::components::collision::BoxComponent*)this->gameScene->player1->components.at("box");
+            manager::components::collision::BoxComponent* player2BoxComp = (manager::components::collision::BoxComponent*)this->gameScene->player2->components.at("box");
+
+
+            if(ballBoxComp->box.collide(player1BoxComp->box)) {
+                this->speedX = this->speedX * 2.0f;
+                this->velocity.x = this->speedX;
+            }
+
+            if(ballBoxComp->box.collide(player2BoxComp->box)) {
+                this->speedX = this->speedX * 2.0f;
+                this->velocity.x = -this->speedX;
+            }
+
+            ballBoxComp = nullptr;
+            player1BoxComp = nullptr;
+            player2BoxComp = nullptr;
+            this->tran->position.x += this->speed * this->velocity.x * delta;
+            this->tran->position.y += this->speed * this->velocity.y * delta;
         }
 
         void BallEntityBehavior::release() {
@@ -93,10 +130,26 @@ namespace game {
                 app::getHeightFloat() * 0.5f,
                 0.0f
             );
+
+            this->velocity.x = (util::nextBool()) ? -1.0 : 1.0;
+            this->velocity.y = (util::nextBool()) ? -1.0 : 1.0;
+
+            this->speedX = 1.0f;
         }
     }
 
     namespace scene {
+        void GameSceneBehavior::ready() {
+            this->player1 = this->scene->entities[0];
+            this->player2 = this->scene->entities[1];
+        }
+
+        void GameSceneBehavior::update(float delta) {
+        }
+
+        void GameSceneBehavior::release() {
+        }
+
     }
 
     namespace global {

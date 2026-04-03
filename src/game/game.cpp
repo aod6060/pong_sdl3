@@ -47,6 +47,7 @@ namespace game {
         manager::behavior::registerBehavior("Entity.Paddle.Player2.Controlled", [](){return new entity::paddle::player2::ControlledEntityBehavior();});
         manager::behavior::registerBehavior("Entity.Ball", [](){return new entity::BallEntityBehavior();});
         // Scene
+        manager::behavior::registerBehavior("Scene.GameScene", []() {return new scene::GameSceneBehavior();});
         // Global
     }
 
