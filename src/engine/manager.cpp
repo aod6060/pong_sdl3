@@ -33,11 +33,14 @@ namespace manager {
     void Global::init() {
         // Behaviors
         this->behaviorIterator([&](IBehavior* b) {
-            b->init(this);
+            //b->init(this);
+            behavior::GlobalBehavior* gb = (behavior::GlobalBehavior*)b;
+            gb->init(this);
         });
 
         if(scene) {
             scene->init(this);
+            scene->postInit();
         }
     }
 
@@ -175,7 +178,20 @@ namespace manager {
         }
 
         if(this->behavior) {
-            this->behavior->init(this);
+            //this->behavior->init(this);
+            behavior::SceneBehavior* sb = (behavior::SceneBehavior*)this->behavior;
+            sb->init(this);
+        }
+    }
+
+    void Scene::postInit() {
+
+        for(int i = 0; i < this->entities.size(); i++) {
+            this->entities[i]->postInit();
+        }
+
+        if(this->behavior) {
+            this->behavior->ready();
         }
     }
 
@@ -316,7 +332,15 @@ namespace manager {
         });
 
         if(this->behavior) {
-            this->behavior->init(this);
+            //this->behavior->init(this);
+            behavior::EntityBehavior* eb = (behavior::EntityBehavior*)this->behavior;
+            eb->init(this);
+        }
+    }
+
+    void Entity::postInit() {
+        if(this->behavior) {
+            this->behavior->ready();
         }
     }
 
@@ -524,19 +548,16 @@ namespace manager {
 
     namespace behavior {
         // Behavior
-        void Behavior::init(Scene* scene) {
-            this->scene = scene;
-            this->ready();
-        }
-
-        void Behavior::init(Entity* entity) {
+        void EntityBehavior::init(Entity* entity) {
             this->entity = entity;
-            this->ready();
         }
 
-        void Behavior::init(Global* global) {
+        void SceneBehavior::init(Scene* scene) {
+            this->scene = scene;
+        }
+
+        void GlobalBehavior::init(Global* global) {
             this->global = global;
-            this->ready();
         }
 
         // Functions

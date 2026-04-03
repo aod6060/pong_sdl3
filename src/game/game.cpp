@@ -45,6 +45,8 @@ namespace game {
     void GameApp::initBehaviors() {
         manager::behavior::registerBehavior("Entity.MoveEntity", []() {return new entity::MoveEntityBehavior();});
         manager::behavior::registerBehavior("Entity.TankControlsEntity", []() {return new entity::TankControlsEntity();});
+        manager::behavior::registerBehavior("Entity.ExitGame", [](){return new entity::ExitGameEntity();});
+        manager::behavior::registerBehavior("Scene.GameScene", [](){return new scene::GameScene();});
     }
 
     void setup(app::Config* config, GameApp* app) {

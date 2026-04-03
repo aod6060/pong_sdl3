@@ -1,7 +1,7 @@
 {
     "type": "scene",
     "version": 2,
-    "behavior": null,
+    "behavior": "Scene.GameScene",
     "entities": [
         {
             "type": "prefab",
@@ -14,6 +14,36 @@
                     "z": 0.0
                 }
             }
+        },
+        {
+            "type": "instance",
+            "name": "exit-hitbox",
+            "behavior": "Entity.ExitGame",
+            "transform": {
+                "position": {
+                    "x": 256.0,
+                    "y": 256.0,
+                    "z": 0.0
+                },
+                "rotation": 0.0,
+                "scale": {
+                    "x": 32.0,
+                    "y": 32.0,
+                    "z": 0.0
+                }
+            },
+            "components": [
+                {
+                    "type": "sprite",
+                    "offset": {
+                        "x": 0.0,
+                        "y": 0.0
+                    }
+                },
+                {
+                    "type": "box"
+                }
+            ]
         }
     ]
 }

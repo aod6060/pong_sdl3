@@ -27,7 +27,6 @@ namespace game {
         }
 
         void MoveEntityBehavior::release() {
-            this->scene = nullptr;
             this->entity = nullptr;
             this->tran = nullptr;
         }
@@ -60,15 +59,42 @@ namespace game {
 
         void TankControlsEntity::release() {
             this->tran = nullptr;
-            this->scene = nullptr;
             this->entity = nullptr;
         }
 
-            
+        // ExitGameEntity
+        void ExitGameEntity::ready() {
+            this->gameScene = (scene::GameScene*)this->entity->scene->behavior;
+        }
+
+        void ExitGameEntity::update(float delta) {
+            manager::components::collision::BoxComponent* box = (manager::components::collision::BoxComponent*)this->entity->components.at("box");
+            manager::components::collision::BoxComponent* pbox = (manager::components::collision::BoxComponent*)this->gameScene->player->components.at("box");
+
+            if(box->box.collide(pbox->box)) {
+                std::cout << "Collide with!\n";
+            }
+        }
+
+        void ExitGameEntity::release() {
+
+        }
+
+        
     }
 
     namespace scene {
+        void GameScene::ready() {
+            this->player = scene->entities[0];
+        }
 
+        void GameScene::update(float delta) {
+
+        }
+
+        void GameScene::release() {
+
+        }
     }
 
     namespace global {

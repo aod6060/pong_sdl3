@@ -499,9 +499,9 @@ namespace manager {
     };
 
     struct IBehavior {
-        virtual void init(Scene* scene) = 0;
-        virtual void init(Entity* entity) = 0;
-        virtual void init(Global* global) = 0;
+        //virtual void init(Scene* scene) = 0;
+        //virtual void init(Entity* entity) = 0;
+        //virtual void init(Global* global) = 0;
 
         virtual void ready() = 0;
         virtual void update(float delta) = 0;
@@ -544,6 +544,7 @@ namespace manager {
         IBehavior* behavior = nullptr;
 
         void init(Global* global);
+        void postInit();
         void handleEvent(SDL_Event* e);
         void update(float delta);
         void render();
@@ -583,6 +584,7 @@ namespace manager {
 
 
         void init(Scene* scene);
+        void postInit();
         void handleEvent(SDL_Event* e);
         void update(float delta);
         void render();
@@ -637,14 +639,19 @@ namespace manager {
     }
 
     namespace behavior {
-        struct Behavior : public manager::IBehavior {
+        struct EntityBehavior : public manager::IBehavior {
             Entity* entity = nullptr;
-            Scene* scene = nullptr;
-            Global* global = nullptr;
+            void init(Entity* entity);
+        };
 
-            virtual void init(Scene* scene);
-            virtual void init(Entity* entity);
-            virtual void init(Global* global);
+        struct SceneBehavior : public manager::IBehavior {
+            Scene* scene = nullptr;
+            void init(Scene* scene);
+        };
+
+        struct GlobalBehavior : public manager::IBehavior {
+            Global* global = nullptr;
+            void init(Global* global);
         };
 
         // 
