@@ -8,13 +8,10 @@ namespace game {
     int test = 0;
 
     void GameApp::init() {
-        //global.setDefaultScenePath("data/scenes/test.scene.json");
         this->initBehaviors();
-
         input::init();
         render::init();
         manager::init();
-        
         global.loadGlobalConfig();
         global.startGame();
         global.init();
@@ -43,10 +40,8 @@ namespace game {
     }
 
     void GameApp::initBehaviors() {
-        manager::behavior::registerBehavior("Entity.MoveEntity", []() {return new entity::MoveEntityBehavior();});
-        manager::behavior::registerBehavior("Entity.TankControlsEntity", []() {return new entity::TankControlsEntity();});
-        manager::behavior::registerBehavior("Entity.ExitGame", [](){return new entity::ExitGameEntity();});
-        manager::behavior::registerBehavior("Scene.GameScene", [](){return new scene::GameScene();});
+        manager::behavior::registerBehavior("Entity.Player1Controlled", [](){return new entity::paddle::Player1Controlled();});
+        manager::behavior::registerBehavior("Entity.Player2Controlled", [](){return new entity::paddle::Player2Controlled();});
     }
 
     void setup(app::Config* config, GameApp* app) {

@@ -5,100 +5,74 @@
 namespace game {
 
     namespace entity {
-
-        // Move Entity Behavior
-        void MoveEntityBehavior::ready() {
-            this->tran = &this->entity->transform;
-        }
-
-        void MoveEntityBehavior::update(float delta) {
-            if(input::isKeyPressed(input::Keyboard::KEYS_LEFT)) {
-                this->tran->position.x -= speed * delta;
-            } else if(input::isKeyPressed(input::Keyboard::KEYS_RIGHT)) {
-                this->tran->position.x += speed * delta;
+        namespace paddle {
+            void Player1Controlled::ready() {
+                tran = &entity->transform;
             }
 
-            if(input::isKeyPressed(input::Keyboard::KEYS_UP)) {
-                this->tran->position.y -= speed * delta;
-            } else if(input::isKeyPressed(input::Keyboard::KEYS_DOWN)) {
-                this->tran->position.y += speed * delta;
+            void Player1Controlled::update(float delta) {
+                if(input::isKeyPressed(input::Keyboard::KEYS_W)) {
+                    if(tran->position.y - (tran->scale.y * 0.5f) > 0.0f) {
+                        direction = -1.0f;
+                    } else {
+                        direction = 0.0f;
+                    }
+                } else if(input::isKeyPressed(input::Keyboard::KEYS_S)) {
+                    if(tran->position.y + (tran->scale.y * 0.5f) < app::getHeightFloat()) {
+                        direction = 1.0f;
+                    } else {
+                        direction = 0.0f;
+                    }
+                } else {
+                    direction = 0.0f;
+                }
+
+                tran->position.y += direction * speed * delta;
             }
 
-        }
-
-        void MoveEntityBehavior::release() {
-            this->entity = nullptr;
-            this->tran = nullptr;
-        }
-
-
-        // TankControlsEntityBehavior
-        void TankControlsEntity::ready() {
-            this->tran = &this->entity->transform;
-        }
-
-        void TankControlsEntity::update(float delta) {
-
-            if(input::isKeyPressed(input::Keyboard::KEYS_LEFT)) {
-                this->tran->rotation -= this->rotSpeed * delta;
-            } else if(input::isKeyPressed(input::Keyboard::KEYS_RIGHT)) {
-                this->tran->rotation += this->rotSpeed * delta;
+            void Player1Controlled::release() {
+                tran = nullptr;
+                entity = nullptr;
             }
 
 
-            float rrot = glm::radians(this->tran->rotation);
-
-            if(input::isKeyPressed(input::Keyboard::KEYS_UP)) {
-                this->tran->position.x += glm::sin(rrot) * speed * delta;
-                this->tran->position.y -= glm::cos(rrot) * speed * delta;
-            } else if(input::isKeyPressed(input::Keyboard::KEYS_DOWN)) {
-                this->tran->position.x -= glm::sin(rrot) * speed * delta;
-                this->tran->position.y += glm::cos(rrot) * speed * delta;
+            // Player2Controlled
+            void Player2Controlled::ready() {
+                tran = &entity->transform;
             }
-        }
 
-        void TankControlsEntity::release() {
-            this->tran = nullptr;
-            this->entity = nullptr;
-        }
+            void Player2Controlled::update(float delta) {
+                if(input::isKeyPressed(input::Keyboard::KEYS_I)) {
+                    if(tran->position.y - (tran->scale.y * 0.5f) > 0.0f) {
+                        direction = -1.0f;
+                    } else {
+                        direction = 0.0f;
+                    }
+                } else if(input::isKeyPressed(input::Keyboard::KEYS_K)) {
+                    if(tran->position.y + (tran->scale.y * 0.5f) < app::getHeightFloat()) {
+                        direction = 1.0f;
+                    } else {
+                        direction = 0.0f;
+                    }
+                } else {
+                    direction = 0.0f;
+                }
 
-        // ExitGameEntity
-        void ExitGameEntity::ready() {
-            this->gameScene = (scene::GameScene*)this->entity->scene->behavior;
-        }
-
-        void ExitGameEntity::update(float delta) {
-            manager::components::collision::BoxComponent* box = (manager::components::collision::BoxComponent*)this->entity->components.at("box");
-            manager::components::collision::BoxComponent* pbox = (manager::components::collision::BoxComponent*)this->gameScene->player->components.at("box");
-
-            if(box->box.collide(pbox->box)) {
-                std::cout << "Collide with!\n";
+                tran->position.y += direction * speed * delta;
             }
+
+            void Player2Controlled::release() {
+                tran = nullptr;
+                entity = nullptr;
+            }
+
         }
-
-        void ExitGameEntity::release() {
-
-        }
-
-        
     }
 
     namespace scene {
-        void GameScene::ready() {
-            this->player = scene->entities[0];
-        }
-
-        void GameScene::update(float delta) {
-
-        }
-
-        void GameScene::release() {
-
-        }
     }
 
     namespace global {
-
     }
 
 }

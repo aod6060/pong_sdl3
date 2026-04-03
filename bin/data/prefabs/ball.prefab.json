@@ -1,0 +1,33 @@
+{
+    "type": "prefab",
+    "version": 1,
+    "entity": {
+        "name": "Ball",
+        "behavior": null,
+        "transform": {
+            "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 16.0,
+                "y": 16.0,
+                "z": 1.0
+            }
+        },
+        "components": [
+            {
+                "type": "sprite",
+                "offset": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            },
+            {
+                "type": "box"
+            }
+        ]
+    }
+}

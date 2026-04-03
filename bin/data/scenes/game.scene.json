@@ -1,0 +1,29 @@
+{
+    "type": "scene",
+    "version": 2,
+    "behavior": null,
+    "entities": [
+        {
+            "type": "prefab",
+            "path": "data/prefabs/paddle/player1/controlled.prefab.json",
+            "transform": {
+                "position": {
+                    "x": 16.0,
+                    "y": 240,
+                    "z": 0.0
+                }
+            }
+        },
+        {
+            "type": "prefab",
+            "path": "data/prefabs/paddle/player2/controlled.prefab.json",
+            "transform": {
+                "position": {
+                    "x": 624.0,
+                    "y": 240,
+                    "z": 0.0
+                }
+            }
+        }
+    ]
+}

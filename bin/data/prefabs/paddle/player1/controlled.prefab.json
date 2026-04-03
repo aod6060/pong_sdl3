@@ -2,8 +2,8 @@
     "type": "prefab",
     "version": 1,
     "entity": {
-        "name": "player",
-        "behavior": "Entity.TankControlsEntity",
+        "name": "Player1",
+        "behavior": "Entity.Player1Controlled",
         "transform": {
             "position": {
                 "x": 0.0,
@@ -12,8 +12,8 @@
             },
             "rotation": 0.0,
             "scale": {
-                "x": 64.0,
-                "y": 32.0,
+                "x": 8.0,
+                "y": 64.0,
                 "z": 1.0
             }
         },

@@ -21,49 +21,39 @@ namespace game {
 
     void setup(app::Config* config, GameApp* app);
 
-    namespace scene {
-        struct GameScene;
-    }
-
     namespace entity {
-        struct MoveEntityBehavior : public manager::behavior::EntityBehavior {
-            manager::Transform* tran = nullptr;
-            float speed = 64.0f;
+        namespace paddle {
+            struct Player1Controlled : public manager::behavior::EntityBehavior {
+                float speed = 64.0f;
+                float direction = 0.0f;
+                manager::Transform* tran = nullptr;
 
+                virtual void ready();
+                virtual void update(float delta);
+                virtual void release();
+            };
+
+            struct Player2Controlled : public manager::behavior::EntityBehavior {
+                float speed = 64.0f;
+                float direction = 0.0f;
+                manager::Transform* tran = nullptr;
+
+                virtual void ready();
+                virtual void update(float delta);
+                virtual void release();
+            };
+
+        }
+
+        struct Ball : public manager::behavior::EntityBehavior {
+            
             virtual void ready();
             virtual void update(float delta);
-            virtual void release();
-        };
-
-        struct TankControlsEntity : public manager::behavior::EntityBehavior {
-            manager::Transform* tran = nullptr;
-            float rotSpeed = 64.0f;
-            float speed = 64.0f;
-
-            virtual void ready();
-            virtual void update(float delta);
-            virtual void release();
-
-        };
-
-        struct ExitGameEntity : public manager::behavior::EntityBehavior {
-            scene::GameScene* gameScene = nullptr;
-
-            virtual void ready();
-            virtual void update(float delta);
-            virtual void release();
-        };
+            virtual void release();   
+        }
     }
 
     namespace scene {
-        struct GameScene : public manager::behavior::SceneBehavior {
-            //entity::TankControlsEntity* player = nullptr;
-            manager::Entity* player = nullptr;
-
-            virtual void ready();
-            virtual void update(float delta);
-            virtual void release();
-        };
     }
 
     namespace global {
