@@ -74,7 +74,8 @@ namespace game {
 
         // BallEntityBehavior
         void BallEntityBehavior::ready() {
-
+            this->tran = &this->entity->transform;
+            this->reset();
         }
 
         void BallEntityBehavior::update(float delta) {
@@ -82,9 +83,17 @@ namespace game {
         }
 
         void BallEntityBehavior::release() {
-
+            this->tran = nullptr;
         }
 
+        void BallEntityBehavior::reset() {
+            // Position
+            this->tran->position = glm::vec3(
+                app::getWidthFloat() * 0.5f,
+                app::getHeightFloat() * 0.5f,
+                0.0f
+            );
+        }
     }
 
     namespace scene {

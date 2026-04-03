@@ -481,6 +481,17 @@ namespace collision {
 
 }
 
+namespace util {
+    void init();
+    void release();
+
+    bool nextBool();
+    uint32_t nextInteger();
+    uint32_t nextIntegerRange(int min, int max);
+    float nextFloat();
+    float nextFloatRange(float min, float max);
+}
+
 namespace manager {
 
     struct Global;

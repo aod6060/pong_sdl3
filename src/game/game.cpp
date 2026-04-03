@@ -11,6 +11,7 @@ namespace game {
         this->initBehaviors();
         input::init();
         render::init();
+        util::init();
         manager::init();
         global.loadGlobalConfig();
         global.startGame();
@@ -35,6 +36,7 @@ namespace game {
         global.release();
 
         manager::release();
+        util::release();
         render::release();
         input::release();
     }

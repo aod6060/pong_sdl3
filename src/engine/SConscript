@@ -10,5 +10,6 @@ env["source_files"] += [
     source("glw.cpp"),
     source("render.cpp"),
     source("collision.cpp"),
+    source("util.cpp"),
     source("manager.cpp")
 ]
