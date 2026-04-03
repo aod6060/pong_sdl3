@@ -8,14 +8,14 @@ namespace game {
     int test = 0;
 
     void GameApp::init() {
-        global.setDefaultScenePath("data/scenes/test.scene.json");
+        //global.setDefaultScenePath("data/scenes/test.scene.json");
+        this->initBehaviors();
 
         input::init();
         render::init();
         manager::init();
-
-        this->initBehaviors();
-
+        
+        global.loadGlobalConfig();
         global.startGame();
         global.init();
     }
