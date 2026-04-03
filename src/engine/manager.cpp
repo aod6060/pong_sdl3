@@ -11,7 +11,10 @@
 
 
 #define SCENE_TYPE "scene"
-#define SCENE_VERSION 1
+#define SCENE_VERSION 2
+
+#define PREFAB_TYPE "prefab"
+#define PREFAB_VERSION 1
 
 namespace manager {
     // Global
@@ -23,7 +26,6 @@ namespace manager {
         behavior::release();
         components::release();
     }
-
 
     void Global::init() {
         if(scene) {
@@ -203,24 +205,41 @@ namespace manager {
 
 
     glm::mat4 Transform::toModel() {
-        return 
+        return
             glm::translate(glm::mat4(1.0f), this->position) *
             glm::rotate(glm::mat4(1.0f), glm::radians(this->rotation), glm::vec3(0.0f, 0.0f, 1.0f)) *
+            glm::translate(glm::mat4(1.0f), glm::vec3(this->offset, 0.0f)) *
             glm::scale(glm::mat4(1.0f), this->scale);
     }
 
     void Transform::load(Json::Value value) {
-        this->position = glm::vec3(
-            value["position"]["x"].asFloat(),
-            value["position"]["y"].asFloat(),
-            value["position"]["z"].asFloat()
-        );
-        this->rotation = value["rotation"].asFloat();
-        this->scale = glm::vec3(
-            value["scale"]["x"].asFloat(),
-            value["scale"]["y"].asFloat(),
-            value["scale"]["z"].asFloat()
-        );
+
+        if(!value["position"].empty()) {
+            std::cout << "Here in position\n";
+            this->position = glm::vec3(
+                value["position"]["x"].asFloat(),
+                value["position"]["y"].asFloat(),
+                value["position"]["z"].asFloat()
+            );
+        }
+
+        if(!value["rotation"].empty()) {
+            std::cout << "Here in rotation\n";
+            this->rotation = value["rotation"].asFloat();
+        }
+
+        if(!value["scale"].empty()) {
+            std::cout << "Here in scale\n";
+            this->scale = glm::vec3(
+                value["scale"]["x"].asFloat(),
+                value["scale"]["y"].asFloat(),
+                value["scale"]["z"].asFloat()
+            );
+        }
+
+        std::cout << "position: " << position.x << ", " << position.y << ", " << position.z << "\n";
+        std::cout << "rotation: " << rotation << "\n";
+        std::cout << "scale: " << scale.x << ", " << scale.y << ", " << scale.z << "\n";
     }
 
     // Entity
@@ -276,7 +295,7 @@ namespace manager {
         this->scene = nullptr;
     }
 
-    void Entity::load(Json::Value value) {
+    void Entity::handleEntity(Json::Value value) {
         if(!value["name"].empty()) {
             this->name = value["name"].asString();
         }
@@ -298,6 +317,38 @@ namespace manager {
                 components::createFactory(this, type, comp);
             }
         }
+    }
+
+    void Entity::load(Json::Value value) {
+        std::string type = value["type"].asString();
+
+        if(type == "instance") {
+            this->handleEntity(value);
+        } else if(type == "prefab") {
+            std::string path = value["path"].asString();
+            loadPrefab(path);
+            handleEntity(value);
+        }
+    }
+
+    void Entity::loadPrefab(std::string path) {
+        std::ifstream in = std::ifstream(path);
+        Json::Value root;
+        in >> root;
+        in.close();
+
+        std::string type = root["type"].asString();
+        uint32_t version = root["version"].asUInt();
+
+        if(type != PREFAB_TYPE) {
+            std::cout << path << "> Name of the file isn't prefab. Will try to load\n";
+        }
+
+        if(version != PREFAB_VERSION) {
+            std::cout << path << "> The file is the wrong version will try to load\n";
+        }
+
+        this->handleEntity(root["entity"]);
     }
 
     void Entity::componentIterator(std::function<void(IComponent* comp)> callback) {
@@ -323,7 +374,9 @@ namespace manager {
             }
 
             void SpriteComponent::render() {
+                entity->transform.offset = this->offset;
                 ::render::setModel(entity->transform.toModel());
+                //::render::setOffset(glm::translate(glm::mat4(1.0f), glm::vec3(this->offset, 0.0f)));
                 ::render::draw();
             }
 
@@ -332,7 +385,14 @@ namespace manager {
             }
 
             void SpriteComponent::load(Json::Value value) {
-
+                if(!value["offset"].empty()) {
+                    this->offset = glm::vec2(
+                        value["offset"]["x"].asFloat(),
+                        value["offset"]["y"].asFloat()
+                    );
+                } else {
+                    this->offset = glm::vec2(0.0f);
+                }
             }
 
         }

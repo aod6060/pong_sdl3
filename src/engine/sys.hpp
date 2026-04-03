@@ -457,10 +457,10 @@ namespace render {
 
     void setProjection(glm::mat4 m);
     void setModel(glm::mat4 m);
+    void setOffset(glm::mat4 m);
 
     void draw();
 }
-
 
 namespace manager {
 
@@ -532,7 +532,8 @@ namespace manager {
         glm::vec3 position;
         float rotation;
         glm::vec3 scale;
-
+        glm::vec2 offset = glm::vec2(0.0f);
+        
         void init(Entity* entity);
         void release();
 
@@ -547,6 +548,9 @@ namespace manager {
         IBehavior* behavior = nullptr;
         std::map<std::string, IComponent*> components;
 
+        std::string entityType; // either "instance" or "prefab"
+        std::string prefabPath;
+
         bool needRemoval = false;
         bool visible = true;
 
@@ -556,18 +560,21 @@ namespace manager {
         void update(float delta);
         void render();
         void release();
+        void handleEntity(Json::Value value);
         void load(Json::Value value);
+        void loadPrefab(std::string path);
         void componentIterator(std::function<void(IComponent* comp)> callback);
     };
 
 
     void init();
     void release();
-    
+
     namespace components {
         namespace render {
             struct SpriteComponent : public IComponent {
                 Entity* entity = nullptr;
+                glm::vec2 offset;
 
                 virtual void init(Entity* entity);
                 virtual void handleEvent(SDL_Event* e);

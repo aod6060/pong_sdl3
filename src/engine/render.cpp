@@ -1,3 +1,4 @@
+#include "SDL3/SDL_video.h"
 #include "sys.hpp"
 
 
@@ -16,8 +17,12 @@ namespace render {
     // Matrix
     static glm::mat4 proj;
     static glm::mat4 model;
+    static glm::mat4 offset;
 
     void init() {
+
+        SDL_GL_SetSwapInterval(1);
+
         glDisable(GL_DEPTH_TEST);
 
         vertexShader.init(GL_VERTEX_SHADER, "data/shaders/main.vs.glsl");
@@ -71,6 +76,10 @@ namespace render {
 
     void setModel(glm::mat4 m) {
         model = m;
+    }
+
+    void setOffset(glm::mat4 m) {
+        offset = m;
     }
 
     void draw() {

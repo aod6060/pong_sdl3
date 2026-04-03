@@ -1,0 +1,30 @@
+{
+    "type": "prefab",
+    "version": 1,
+    "entity": {
+        "name": "player",
+        "behavior": "Entity.TankControlsEntity",
+        "transform": {
+            "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "rotation": 0.0,
+            "scale": {
+                "x": 64.0,
+                "y": 32.0,
+                "z": 1.0
+            }
+        },
+        "components": [
+            {
+                "type": "sprite",
+                "offset": {
+                    "x": 0.0,
+                    "y": 0.0
+                }
+            }
+        ]
+    }
+}
