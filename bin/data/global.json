@@ -1,0 +1,6 @@
+{
+    "type": "global",
+    "version": 1,
+    "default-scene": "data/scenes/test.scene.json",
+    "behaviors": []
+}

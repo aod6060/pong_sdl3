@@ -462,6 +462,25 @@ namespace render {
     void draw();
 }
 
+namespace collision {
+    struct Box {
+        glm::vec2 position;
+        glm::vec2 offset;
+        glm::vec2 size;
+
+        void init(glm::vec2 p, glm::vec2 o, glm::vec2 s);
+
+        float left();
+        float right();
+        float top();
+        float bottom();
+
+        bool collide(Box& other);
+        bool collide(glm::vec2 point);
+    };
+
+}
+
 namespace manager {
 
     struct Global;
@@ -482,6 +501,7 @@ namespace manager {
     struct IBehavior {
         virtual void init(Scene* scene) = 0;
         virtual void init(Entity* entity) = 0;
+        virtual void init(Global* global) = 0;
 
         virtual void ready() = 0;
         virtual void update(float delta) = 0;
@@ -498,6 +518,8 @@ namespace manager {
 
         bool isSceneChange = false;
 
+        std::map<std::string, IBehavior*> behaviors;
+
         virtual void init();
         virtual void handleEvent(SDL_Event* e);
         virtual void update(float delta);
@@ -508,6 +530,11 @@ namespace manager {
         void reloadScene();
         void setDefaultScenePath(std::string path);
         void startGame();
+
+        void loadGlobalConfig();
+
+        IBehavior* getBehavior(std::string name);
+        void behaviorIterator(std::function<void(IBehavior* b)> callback);
     };
 
     struct Scene {
@@ -533,7 +560,7 @@ namespace manager {
         float rotation;
         glm::vec3 scale;
         glm::vec2 offset = glm::vec2(0.0f);
-        
+
         void init(Entity* entity);
         void release();
 
@@ -585,6 +612,22 @@ namespace manager {
             };
         }
 
+        namespace collision {
+            struct BoxComponent : public IComponent {
+                Entity* entity = nullptr;
+
+                ::collision::Box box;
+
+                virtual void init(Entity* entity);
+                virtual void handleEvent(SDL_Event* e);
+                virtual void update(float delta);
+                virtual void render();
+                virtual void release();
+                virtual void load(Json::Value value);
+
+            };
+        }
+
         void init();
         void release();
         void registerComponent(std::string name, std::function<IComponent*()> functoryFunction);
@@ -597,9 +640,11 @@ namespace manager {
         struct Behavior : public manager::IBehavior {
             Entity* entity = nullptr;
             Scene* scene = nullptr;
+            Global* global = nullptr;
 
             virtual void init(Scene* scene);
             virtual void init(Entity* entity);
+            virtual void init(Global* global);
         };
 
         // 

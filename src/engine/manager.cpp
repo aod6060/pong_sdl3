@@ -10,6 +10,9 @@
 #include <vector>
 
 
+#define GLOBAL_TYPE "global"
+#define GLOBAL_VERSION 1
+
 #define SCENE_TYPE "scene"
 #define SCENE_VERSION 2
 
@@ -28,6 +31,11 @@ namespace manager {
     }
 
     void Global::init() {
+        // Behaviors
+        this->behaviorIterator([&](IBehavior* b) {
+            b->init(this);
+        });
+
         if(scene) {
             scene->init(this);
         }
@@ -40,6 +48,10 @@ namespace manager {
     }
 
     void Global::update(float delta) {
+        this->behaviorIterator([&](IBehavior* b) {
+            b->update(delta);
+        });
+
         if(scene) {
             scene->update(delta);
         }
@@ -55,6 +67,11 @@ namespace manager {
         if(scene) {
             scene->release();
         }
+
+        this->behaviorIterator([&](IBehavior* b) {
+            b->release();
+        });
+        
     }
 
     void Global::loadScene(std::string path) {
@@ -103,6 +120,52 @@ namespace manager {
         this->loadScene(this->defaultScenePath);
     }
 
+    void Global::loadGlobalConfig() {
+        std::ifstream in = std::ifstream("data/global.json");
+        Json::Value root;
+        in >> root;
+        in.close();
+
+        std::string type = root["type"].asString();
+        uint32_t version = root["version"].asUInt();
+
+        if(type != GLOBAL_TYPE) {
+            std::cout << "File type isn't a scene. Will try to load!\n";
+        }
+
+        if(version != GLOBAL_VERSION) {
+            std::cout << "File version isn't corrected which is " << SCENE_VERSION << ". Will try to load\n";
+        }
+
+        this->setDefaultScenePath(root["default-scene"].asString());
+
+        Json::Value behaviors = root["behaviors"];
+
+        for(int i = 0; i < behaviors.size(); i++) {
+            Json::Value obj = behaviors[i];
+            //std::string name
+            std::string name = obj["name"].asString();
+            std::string b = obj["behavior"].asString();
+            this->behaviors[name] = manager::behavior::create(b);
+        }
+    }
+
+    IBehavior* Global::getBehavior(std::string name) {
+        if(this->behaviors.find(name) != this->behaviors.end()) {
+            return behaviors.at(name);
+        } else {
+            std::cout << "Global " << name << " doesn't exist!\n";
+            return nullptr;
+        }
+    }
+
+    void Global::behaviorIterator(std::function<void(IBehavior* b)> callback) {
+        for(std::map<std::string, IBehavior*>::iterator it = behaviors.begin(); it != behaviors.end(); it++) {
+            callback(it->second);
+        }
+    }
+
+    
     // Scene
     void Scene::init(Global* global) {
         this->global = global;
@@ -397,11 +460,42 @@ namespace manager {
 
         }
 
+        namespace collision {
+            void BoxComponent::init(Entity* entity) {
+                this->entity = entity;
+            }
+
+            void BoxComponent::handleEvent(SDL_Event* e) {
+
+            }
+
+            void BoxComponent::update(float delta) {
+                
+                box.init(
+                    glm::vec2(entity->transform.position.x, entity->transform.position.y), 
+                    glm::vec2(entity->transform.offset.x, entity->transform.offset.y),
+                    glm::vec2(entity->transform.scale.x, entity->transform.scale.y));
+            }
+
+            void BoxComponent::render() {
+
+            }
+
+            void BoxComponent::release() {
+                this->entity = nullptr;
+            }
+
+            void BoxComponent::load(Json::Value value) {
+
+            }
+
+        }
         // Functions
         static std::map<std::string, std::function<IComponent*()>> _compFactory;
 
         void init() {
             registerComponent("sprite", []() { return new render::SpriteComponent();});
+            registerComponent("box", []() {return new collision::BoxComponent();});
         }
 
         void release() {
@@ -437,6 +531,11 @@ namespace manager {
 
         void Behavior::init(Entity* entity) {
             this->entity = entity;
+            this->ready();
+        }
+
+        void Behavior::init(Global* global) {
+            this->global = global;
             this->ready();
         }
 
