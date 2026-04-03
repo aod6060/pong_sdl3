@@ -3,7 +3,7 @@
     "version": 1,
     "entity": {
         "name": "Ball",
-        "behavior": null,
+        "behavior": "Entity.Ball",
         "transform": {
             "position": {
                 "x": 0.0,

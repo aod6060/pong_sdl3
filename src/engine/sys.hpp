@@ -499,10 +499,6 @@ namespace manager {
     };
 
     struct IBehavior {
-        //virtual void init(Scene* scene) = 0;
-        //virtual void init(Entity* entity) = 0;
-        //virtual void init(Global* global) = 0;
-
         virtual void ready() = 0;
         virtual void update(float delta) = 0;
         virtual void release() = 0;

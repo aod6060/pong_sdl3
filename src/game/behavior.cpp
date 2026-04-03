@@ -6,67 +6,85 @@ namespace game {
 
     namespace entity {
         namespace paddle {
-            void Player1Controlled::ready() {
-                tran = &entity->transform;
-            }
+            namespace player1 {
+                void ControlledEntityBehavior::ready() {
+                    tran = &entity->transform;
+                }
+                
+                void ControlledEntityBehavior::update(float delta) {
+                    if(input::isKeyPressed(input::Keyboard::KEYS_W)) {
+                        if(tran->position.y - (tran->scale.y * 0.5f) > 0.0f) {
+                            direction = -1.0f;
+                        } else {
+                            direction = 0.0f;
+                        }
+                    } else if(input::isKeyPressed(input::Keyboard::KEYS_S)) {
+                        if(tran->position.y + (tran->scale.y * 0.5f) < app::getHeightFloat()) {
+                            direction = 1.0f;
+                        } else {
+                            direction = 0.0f;
+                        }
+                    } else {
+                        direction = 0.0f;
+                    }
 
-            void Player1Controlled::update(float delta) {
-                if(input::isKeyPressed(input::Keyboard::KEYS_W)) {
-                    if(tran->position.y - (tran->scale.y * 0.5f) > 0.0f) {
-                        direction = -1.0f;
-                    } else {
-                        direction = 0.0f;
-                    }
-                } else if(input::isKeyPressed(input::Keyboard::KEYS_S)) {
-                    if(tran->position.y + (tran->scale.y * 0.5f) < app::getHeightFloat()) {
-                        direction = 1.0f;
-                    } else {
-                        direction = 0.0f;
-                    }
-                } else {
-                    direction = 0.0f;
+                    tran->position.y += direction * speed * delta;
                 }
 
-                tran->position.y += direction * speed * delta;
+                void ControlledEntityBehavior::release() {
+                    tran = nullptr;
+                    entity = nullptr;
+                }
+
             }
-
-            void Player1Controlled::release() {
-                tran = nullptr;
-                entity = nullptr;
-            }
-
-
             // Player2Controlled
-            void Player2Controlled::ready() {
-                tran = &entity->transform;
-            }
 
-            void Player2Controlled::update(float delta) {
-                if(input::isKeyPressed(input::Keyboard::KEYS_I)) {
-                    if(tran->position.y - (tran->scale.y * 0.5f) > 0.0f) {
-                        direction = -1.0f;
-                    } else {
-                        direction = 0.0f;
-                    }
-                } else if(input::isKeyPressed(input::Keyboard::KEYS_K)) {
-                    if(tran->position.y + (tran->scale.y * 0.5f) < app::getHeightFloat()) {
-                        direction = 1.0f;
-                    } else {
-                        direction = 0.0f;
-                    }
-                } else {
-                    direction = 0.0f;
+            namespace player2 {
+                void ControlledEntityBehavior::ready() {
+                    tran = &entity->transform;
                 }
 
-                tran->position.y += direction * speed * delta;
-            }
+                void ControlledEntityBehavior::update(float delta) {
+                    if(input::isKeyPressed(input::Keyboard::KEYS_I)) {
+                        if(tran->position.y - (tran->scale.y * 0.5f) > 0.0f) {
+                            direction = -1.0f;
+                        } else {
+                            direction = 0.0f;
+                        }
+                    } else if(input::isKeyPressed(input::Keyboard::KEYS_K)) {
+                        if(tran->position.y + (tran->scale.y * 0.5f) < app::getHeightFloat()) {
+                            direction = 1.0f;
+                        } else {
+                            direction = 0.0f;
+                        }
+                    } else {
+                        direction = 0.0f;
+                    }
 
-            void Player2Controlled::release() {
-                tran = nullptr;
-                entity = nullptr;
+                    tran->position.y += direction * speed * delta;
+                }
+
+                void ControlledEntityBehavior::release() {
+                    tran = nullptr;
+                    entity = nullptr;
+                }
+
             }
+        }
+
+        // BallEntityBehavior
+        void BallEntityBehavior::ready() {
 
         }
+
+        void BallEntityBehavior::update(float delta) {
+
+        }
+
+        void BallEntityBehavior::release() {
+
+        }
+
     }
 
     namespace scene {

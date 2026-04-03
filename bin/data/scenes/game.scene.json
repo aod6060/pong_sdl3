@@ -24,6 +24,17 @@
                     "z": 0.0
                 }
             }
+        },
+        {
+            "type": "prefab",
+            "path": "data/prefabs/ball.prefab.json",
+            "transform": {
+                "position": {
+                    "x": 320,
+                    "y": 240,
+                    "z": 0.0
+                }
+            }
         }
     ]
 }

@@ -3,7 +3,7 @@
     "version": 1,
     "entity": {
         "name": "Player1",
-        "behavior": "Entity.Player1Controlled",
+        "behavior": "Entity.Paddle.Player1.Controlled",
         "transform": {
             "position": {
                 "x": 0.0,

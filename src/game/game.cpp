@@ -40,8 +40,12 @@ namespace game {
     }
 
     void GameApp::initBehaviors() {
-        manager::behavior::registerBehavior("Entity.Player1Controlled", [](){return new entity::paddle::Player1Controlled();});
-        manager::behavior::registerBehavior("Entity.Player2Controlled", [](){return new entity::paddle::Player2Controlled();});
+        // Entity
+        manager::behavior::registerBehavior("Entity.Paddle.Player1.Controlled", [](){return new entity::paddle::player1::ControlledEntityBehavior();});
+        manager::behavior::registerBehavior("Entity.Paddle.Player2.Controlled", [](){return new entity::paddle::player2::ControlledEntityBehavior();});
+        manager::behavior::registerBehavior("Entity.Ball", [](){return new entity::BallEntityBehavior();});
+        // Scene
+        // Global
     }
 
     void setup(app::Config* config, GameApp* app) {

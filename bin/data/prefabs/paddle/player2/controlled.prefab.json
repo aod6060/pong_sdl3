@@ -2,8 +2,8 @@
     "type": "prefab",
     "version": 1,
     "entity": {
-        "name": "Player1",
-        "behavior": "Entity.Player2Controlled",
+        "name": "Player2",
+        "behavior": "Entity.Paddle.Player2.Controlled",
         "transform": {
             "position": {
                 "x": 0.0,
