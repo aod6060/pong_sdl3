@@ -40,6 +40,7 @@ namespace game {
             // Player2Controlled
 
             namespace player2 {
+                // ControlledEntityBehavior
                 void ControlledEntityBehavior::ready() {
                     tran = &entity->transform;
                 }
@@ -69,6 +70,35 @@ namespace game {
                     entity = nullptr;
                 }
 
+
+                // ImpossibleEntityBehavior
+                void ImpossibleEntityBehavior::ready() {
+                    this->tran = &entity->transform;
+                    //gsBehavior = (scene::GameSceneBehavior*)this->entity->scene->behavior;
+                    //ball = ((scene::GameSceneBehavior*)this->entity->scene->behavior);
+                    gsBehavior = (scene::GameSceneBehavior*)this->entity->scene->behavior;
+                }
+
+                void ImpossibleEntityBehavior::update(float delta) {
+                    manager::Transform* ball = &gsBehavior->ball->transform;
+                    if(tran->position.y - (tran->scale.y * 0.5) > ball->position.y) {
+                        this->direction = -1.0f;
+                    } else if(tran->position.y + (tran->scale.y * 0.5) < ball->position.y) {
+                        this->direction = 1.0f;
+                    } else {
+                        this->direction = 0.0f;
+                    }
+                    this->tran->position.y += this->speed * this->direction * delta;
+                    ball = nullptr;
+                }
+
+                void ImpossibleEntityBehavior::release() {
+                    gsBehavior = nullptr;
+                    tran = nullptr;
+                    entity = nullptr;
+                }
+
+                
             }
         }
 
@@ -142,6 +172,7 @@ namespace game {
         void GameSceneBehavior::ready() {
             this->player1 = this->scene->entities[0];
             this->player2 = this->scene->entities[1];
+            this->ball = this->scene->entities[2];
         }
 
         void GameSceneBehavior::update(float delta) {

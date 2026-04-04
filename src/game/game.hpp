@@ -49,6 +49,18 @@ namespace game {
                     virtual void update(float delta);
                     virtual void release();
                 };
+
+                struct ImpossibleEntityBehavior : public manager::behavior::EntityBehavior {
+                    float speed = 64.0f;
+                    float direction = 0.0f;
+                    manager::Transform* tran = nullptr;
+                    scene::GameSceneBehavior* gsBehavior = nullptr;
+                    //manager::Entity* ball = nullptr;
+
+                    virtual void ready();
+                    virtual void update(float delta);
+                    virtual void release();
+                };
             }
         }
 
@@ -59,7 +71,7 @@ namespace game {
             float speed = 64.0f;
 
             float speedX = 1.0f;
-            
+
             virtual void ready();
             virtual void update(float delta);
             virtual void release(); 
@@ -72,6 +84,7 @@ namespace game {
         struct GameSceneBehavior : public manager::behavior::SceneBehavior {
             manager::Entity* player1 = nullptr;
             manager::Entity* player2 = nullptr;
+            manager::Entity* ball = nullptr;
 
             virtual void ready();
             virtual void update(float delta);
