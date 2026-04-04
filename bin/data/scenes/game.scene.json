@@ -16,7 +16,7 @@
         },
         {
             "type": "prefab",
-            "path": "data/prefabs/paddle/player2/impossible.prefab.json",
+            "path": "data/prefabs/paddle/player2/expert.prefab.json",
             "transform": {
                 "position": {
                     "x": 624.0,

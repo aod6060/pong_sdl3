@@ -4,7 +4,7 @@
 
 
 namespace game {
-    
+
     void GameApp::init() {
         this->initBehaviors();
         input::init();
@@ -44,7 +44,8 @@ namespace game {
         manager::behavior::registerBehavior("Entity.Paddle.Player1.Controlled", [](){return new entity::paddle::player1::ControlledEntityBehavior();});
         manager::behavior::registerBehavior("Entity.Paddle.Player2.Controlled", [](){return new entity::paddle::player2::ControlledEntityBehavior();});
         manager::behavior::registerBehavior("Entity.Paddle.Player2.Impossible", [](){return new entity::paddle::player2::ImpossibleEntityBehavior();});
-
+        manager::behavior::registerBehavior("Entity.Paddle.Player2.Expert", [](){return new entity::paddle::player2::ExpertEntityBehavior();});
+        // Ball
         manager::behavior::registerBehavior("Entity.Ball", [](){return new entity::BallEntityBehavior();});
         // Scene
         manager::behavior::registerBehavior("Scene.GameScene", []() {return new scene::GameSceneBehavior();});

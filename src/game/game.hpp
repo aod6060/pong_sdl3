@@ -61,6 +61,17 @@ namespace game {
                     virtual void update(float delta);
                     virtual void release();
                 };
+
+                struct ExpertEntityBehavior : public manager::behavior::EntityBehavior {
+                    float speed = 64.0f;
+                    float direction = 0.0f;
+                    manager::Transform* tran = nullptr;
+                    scene::GameSceneBehavior* gsBehavior = nullptr;
+
+                    virtual void ready();
+                    virtual void update(float delta);
+                    virtual void release();
+                };
             }
         }
 

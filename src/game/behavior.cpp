@@ -74,8 +74,6 @@ namespace game {
                 // ImpossibleEntityBehavior
                 void ImpossibleEntityBehavior::ready() {
                     this->tran = &entity->transform;
-                    //gsBehavior = (scene::GameSceneBehavior*)this->entity->scene->behavior;
-                    //ball = ((scene::GameSceneBehavior*)this->entity->scene->behavior);
                     gsBehavior = (scene::GameSceneBehavior*)this->entity->scene->behavior;
                 }
 
@@ -98,7 +96,36 @@ namespace game {
                     entity = nullptr;
                 }
 
-                
+                // ExpertEntityBehavior
+                void ExpertEntityBehavior::ready() {
+                    this->tran = &entity->transform;
+                    gsBehavior = (scene::GameSceneBehavior*)this->entity->scene->behavior;
+                }
+
+                void ExpertEntityBehavior::update(float delta) {
+                    manager::Transform* ball = &gsBehavior->ball->transform;
+                    entity::BallEntityBehavior* ballBehavior = (entity::BallEntityBehavior*)gsBehavior->ball->behavior;
+
+                    if(ballBehavior->velocity.x > 0.0f) {
+                        if(tran->position.y - (tran->scale.y * 0.5) > ball->position.y) {
+                            this->direction = -1.0f;
+                        } else if(tran->position.y + (tran->scale.y * 0.5) < ball->position.y) {
+                            this->direction = 1.0f;
+                        } else {
+                            this->direction = 0.0f;
+                        }
+                        this->tran->position.y += this->speed * this->direction * delta;
+                    }
+                    ballBehavior = nullptr;
+                    ball = nullptr;
+                }
+
+                void ExpertEntityBehavior::release() {
+                    this->tran = nullptr;
+                    this->gsBehavior = nullptr;
+                    this->entity = nullptr;
+                }
+
             }
         }
 
