@@ -5,7 +5,7 @@
     "entities": [
         {
             "type": "prefab",
-            "path": "data/prefabs/paddle/player1/controlled.prefab.json",
+            "path": "data/prefabs/paddle/player1/easy.prefab.json",
             "transform": {
                 "position": {
                     "x": 16.0,

@@ -43,6 +43,11 @@ namespace game {
         // Entity
         // Player 1
         manager::behavior::registerBehavior("Entity.Paddle.Player1.Controlled", [](){return new entity::paddle::player1::ControlledEntityBehavior();});
+        manager::behavior::registerBehavior("Entity.Paddle.Player1.Impossible", [](){return new entity::paddle::player1::ImpossibleEntityBehavior();});
+        manager::behavior::registerBehavior("Entity.Paddle.Player1.Expert", [](){return new entity::paddle::player1::ExpertEntityBehavior();});
+        manager::behavior::registerBehavior("Entity.Paddle.Player1.Hard", [](){return new entity::paddle::player1::HardEntityBehavior();});
+        manager::behavior::registerBehavior("Entity.Paddle.Player1.Normal", [](){return new entity::paddle::player1::NormalEntityBehavior();});
+        manager::behavior::registerBehavior("Entity.paddle.Player1.Easy", [](){return new entity::paddle::player1::EasyEntityBehavior();});
         // Player 2
         manager::behavior::registerBehavior("Entity.Paddle.Player2.Controlled", [](){return new entity::paddle::player2::ControlledEntityBehavior();});
         manager::behavior::registerBehavior("Entity.Paddle.Player2.Impossible", [](){return new entity::paddle::player2::ImpossibleEntityBehavior();});
