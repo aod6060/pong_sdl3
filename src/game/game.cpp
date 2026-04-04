@@ -41,10 +41,15 @@ namespace game {
 
     void GameApp::initBehaviors() {
         // Entity
+        // Player 1
         manager::behavior::registerBehavior("Entity.Paddle.Player1.Controlled", [](){return new entity::paddle::player1::ControlledEntityBehavior();});
+        // Player 2
         manager::behavior::registerBehavior("Entity.Paddle.Player2.Controlled", [](){return new entity::paddle::player2::ControlledEntityBehavior();});
         manager::behavior::registerBehavior("Entity.Paddle.Player2.Impossible", [](){return new entity::paddle::player2::ImpossibleEntityBehavior();});
         manager::behavior::registerBehavior("Entity.Paddle.Player2.Expert", [](){return new entity::paddle::player2::ExpertEntityBehavior();});
+        manager::behavior::registerBehavior("Entity.Paddle.Player2.Hard", [](){return new entity::paddle::player2::HardEntityBehavior();});
+        manager::behavior::registerBehavior("Entity.Paddle.Player2.Normal", [](){return new entity::paddle::player2::NormalEntityBehavior();});
+        manager::behavior::registerBehavior("Entity.paddle.Player2.Easy", [](){return new entity::paddle::player2::EasyEntityBehavior();});
         // Ball
         manager::behavior::registerBehavior("Entity.Ball", [](){return new entity::BallEntityBehavior();});
         // Scene

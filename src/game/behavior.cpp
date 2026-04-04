@@ -126,6 +126,96 @@ namespace game {
                     this->entity = nullptr;
                 }
 
+                // HardEntityBehavior
+                void HardEntityBehavior::ready() {
+                    this->tran = &this->entity->transform;
+                    gsBehavior = (scene::GameSceneBehavior*)this->entity->scene->behavior;
+                }
+
+                void HardEntityBehavior::update(float delta) {
+                    manager::Transform* ball = &gsBehavior->ball->transform;
+                    entity::BallEntityBehavior* ballBehavior = (entity::BallEntityBehavior*)gsBehavior->ball->behavior;
+
+                    if(ballBehavior->velocity.x > 0.0f && ball->position.x > app::getWidthFloat() * 0.25f) {
+                        if(tran->position.y - (tran->scale.y * 0.5) > ball->position.y) {
+                            this->direction = -1.0f;
+                        } else if(tran->position.y + (tran->scale.y * 0.5) < ball->position.y) {
+                            this->direction = 1.0f;
+                        } else {
+                            this->direction = 0.0f;
+                        }
+                        this->tran->position.y += this->speed * this->direction * delta;
+                    }
+                    ballBehavior = nullptr;
+                    ball = nullptr;
+                }
+
+                void HardEntityBehavior::release() {
+                    this->tran = nullptr;
+                    this->gsBehavior = nullptr;
+                    this->entity = nullptr;
+                }
+
+                // NormalEntityBehavior
+                void NormalEntityBehavior::ready() {
+                    this->tran = &this->entity->transform;
+                    gsBehavior = (scene::GameSceneBehavior*)this->entity->scene->behavior;
+                }
+
+                void NormalEntityBehavior::update(float delta) {
+                    manager::Transform* ball = &gsBehavior->ball->transform;
+                    entity::BallEntityBehavior* ballBehavior = (entity::BallEntityBehavior*)gsBehavior->ball->behavior;
+
+                    if(ballBehavior->velocity.x > 0.0f && ball->position.x > app::getWidthFloat() * 0.5f) {
+                        if(tran->position.y - (tran->scale.y * 0.5) > ball->position.y) {
+                            this->direction = -1.0f;
+                        } else if(tran->position.y + (tran->scale.y * 0.5) < ball->position.y) {
+                            this->direction = 1.0f;
+                        } else {
+                            this->direction = 0.0f;
+                        }
+                        this->tran->position.y += this->speed * this->direction * delta;
+                    }
+                    ballBehavior = nullptr;
+                    ball = nullptr;
+                }
+
+                void NormalEntityBehavior::release() {
+                    this->tran = nullptr;
+                    this->gsBehavior = nullptr;
+                    this->entity = nullptr;
+                }
+
+                void EasyEntityBehavior::ready() {
+                    this->tran = &this->entity->transform;
+                    gsBehavior = (scene::GameSceneBehavior*)this->entity->scene->behavior;
+                }
+
+                void EasyEntityBehavior::update(float delta) {
+                    manager::Transform* ball = &gsBehavior->ball->transform;
+                    entity::BallEntityBehavior* ballBehavior = (entity::BallEntityBehavior*)gsBehavior->ball->behavior;
+
+                    if(ballBehavior->velocity.x > 0.0f && ball->position.x > app::getWidthFloat() * 0.75f) {
+                        if(tran->position.y - (tran->scale.y * 0.5) > ball->position.y) {
+                            this->direction = -1.0f;
+                        } else if(tran->position.y + (tran->scale.y * 0.5) < ball->position.y) {
+                            this->direction = 1.0f;
+                        } else {
+                            this->direction = 0.0f;
+                        }
+                        this->tran->position.y += this->speed * this->direction * delta;
+                    }
+                    ballBehavior = nullptr;
+                    ball = nullptr;
+                }
+
+                void EasyEntityBehavior::release() {
+                    this->tran = nullptr;
+                    this->gsBehavior = nullptr;
+                    this->entity = nullptr;
+                }
+
+                
             }
         }
 
