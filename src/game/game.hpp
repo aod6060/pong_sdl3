@@ -183,6 +183,9 @@ namespace game {
 
     namespace scene {
         struct GameSceneBehavior : public manager::behavior::SceneBehavior {
+            uint32_t player1Score = 0;
+            uint32_t player2Score = 0;
+            
             manager::Entity* player1 = nullptr;
             manager::Entity* player2 = nullptr;
             manager::Entity* ball = nullptr;
