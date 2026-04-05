@@ -305,5 +305,43 @@ namespace render {
             return this->typeSize() * this->count();
         }
 
+        // Texture2D
+        void Texture2D::init() {
+            glGenTextures(1, &this->id);
+        }
+
+        void Texture2D::release() {
+            glDeleteTextures(1, &this->id);
+        }
+
+        void Texture2D::bind(GLenum active) {
+            glActiveTexture(active);
+            glBindTexture(GL_TEXTURE_2D, this->id);
+        }
+
+        void Texture2D::unbind(GLenum active) {
+            glActiveTexture(active);
+            glBindTexture(GL_TEXTURE_2D, 0);
+        }
+
+        void Texture2D::texImage2D(GLint level, GLint internalFormat, size_t width, size_t height, GLenum format, GLenum type, const void* pixels) {
+            glTexImage2D(
+                GL_TEXTURE_2D,
+                level,
+                internalFormat,
+                width,
+                height,
+                0,
+                format,
+                type,
+                pixels
+            );
+        }
+
+        void Texture2D::texParameter(GLenum param, GLint value) {
+            glTexParameteri(GL_TEXTURE_2D, param, value);
+        }
+
+
     }
 }

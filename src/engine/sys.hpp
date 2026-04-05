@@ -447,6 +447,19 @@ namespace render {
             size_t dataSize();
         };
 
+        struct Texture2D {
+            uint32_t id = 0;
+            uint32_t width = 1;
+            uint32_t height = 1;
+
+            void init();
+            void release();
+            void bind(GLenum active);
+            void unbind(GLenum active);
+
+            void texImage2D(GLint level, GLint internalFormat, size_t width, size_t height, GLenum format, GLenum type, const void* pixels);
+            void texParameter(GLenum param, GLint value);
+        };
     }
 
 
