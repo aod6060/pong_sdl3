@@ -482,6 +482,41 @@ namespace manager {
                 }
             }
 
+            void FontRenderComponent::init(Entity* entity) {
+                this->entity = entity;
+            }
+
+            void FontRenderComponent::handleEvent(SDL_Event* e) {
+
+            }
+
+            void FontRenderComponent::update(float delta) {
+
+            }
+
+            void FontRenderComponent::render() {
+                int width, height;
+                ::render::font::getSize(this->text, &width, &height);
+                entity->transform.scale.x = width;
+                entity->transform.scale.y = height;
+                ::render::setModel(entity->transform.toModel());
+                //::render::setOffset(glm::translate(glm::mat4(1.0f), glm::vec3(this->offset, 0.0f)));
+                //::render::draw();
+                ::render::font::draw(this->text);
+            }
+
+            void FontRenderComponent::release() {
+                this->entity = nullptr;
+            }
+
+            void FontRenderComponent::load(Json::Value value) {
+                if(!value["text"].isNull()) {
+                    this->text = value["text"].asString();
+                }
+            }
+
+
+            
         }
 
         namespace collision {
@@ -519,6 +554,7 @@ namespace manager {
 
         void init() {
             registerComponent("sprite", []() { return new render::SpriteComponent();});
+            registerComponent("render-font", [](){return new render::FontRenderComponent();});
             registerComponent("box", []() {return new collision::BoxComponent();});
         }
 

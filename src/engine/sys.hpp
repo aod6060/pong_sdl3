@@ -473,6 +473,13 @@ namespace render {
     void setOffset(glm::mat4 m);
 
     void draw();
+
+    namespace font {
+        void init();
+        void release();
+        void getSize(std::string text, int* width, int* height);
+        void draw(std::string text);
+    }
 }
 
 namespace collision {
@@ -631,6 +638,19 @@ namespace manager {
                 virtual void render();
                 virtual void release();
                 virtual void load(Json::Value value);
+            };
+
+            struct FontRenderComponent : public IComponent {
+                Entity* entity = nullptr;
+                std::string text;
+
+                virtual void init(Entity* entity);
+                virtual void handleEvent(SDL_Event* e);
+                virtual void update(float delta);
+                virtual void render();
+                virtual void release();
+                virtual void load(Json::Value value);
+
             };
         }
 
